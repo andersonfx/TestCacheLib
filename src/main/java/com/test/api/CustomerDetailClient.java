@@ -28,7 +28,7 @@ import io.vertx.redis.RedisOptions;
 public class CustomerDetailClient extends AbstractConfigurationVerticle
 {
   private static final Logger logger = LoggerFactory.getLogger(TestCacheSrv.class);
-  
+
   @Inject
   TestCacheSrv serviceCache;
   @Override
@@ -53,6 +53,7 @@ public class CustomerDetailClient extends AbstractConfigurationVerticle
         vertx.createHttpServer().requestHandler(router::accept)
         .listen(8085, result -> {
           if (result.succeeded()) {
+            logger.info("Service : http://localhost:8085/service1");
             startFuture.complete();
           } else {
               startFuture.fail(result.cause());
@@ -79,7 +80,6 @@ public class CustomerDetailClient extends AbstractConfigurationVerticle
     HttpServerResponse response = context.response();
     
     serviceCache.getShows( name -> {
-      logger.info("EN GETSHOWS ...");
       logger.info(" result = "+name.result().encode()
       );
       response
